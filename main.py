@@ -264,6 +264,10 @@ while True:
         while True:
             user_message = input("\nYou: ")
 
+            if not user_message.strip():
+                print("Please enter a message.")
+                continue
+
             if user_message.lower() == "exit":
                 summary_data = generate_session_summary(conversation_history)
 
