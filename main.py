@@ -72,59 +72,82 @@ def validate_ai_response(ai_message):
 
     except (json.JSONDecodeError, TypeError):
         return None
-        
 while True:
 
-    user_message = input("\nYou: ")
+    print("\n================================")
+    print("       DUKA STOCK ADVISOR")
+    print("================================")
+    print("1. Start New Session")
+    print("2. Open Past Session")
+    print("3. Exit")
 
-    if user_message.lower() == "exit":
-        print("Goodbye!")
+    choice = input("\nChoose an option: ")
+
+    if choice == "1":
+        print("\nStarting a new session...")
+
+        conversation_history = []
+
+        while True:
+            user_message = input("\nYou: ")
+
+            if user_message.lower() == "exit":
+                print("Leaving session...")
+                break
+
+            conversation_history.append(
+                types.Content(
+                    role="user",
+                    parts=[types.Part.from_text(text=user_message)]
+                )
+            )
+
+            response = client.models.generate_content(
+                model="gemini-3.5-flash-lite",
+                contents=conversation_history,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_prompt
+                )
+            )
+
+            ai_message = response.text
+
+            ai_data = validate_ai_response(ai_message)
+
+            if ai_data is None:
+                print("Warning: AI returned invalid JSON. Retrying...")
+
+                retry_response = client.models.generate_content(
+                    model="gemini-3.5-flash-lite",
+                    contents=conversation_history,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_prompt
+                    )
+                )
+
+                ai_message = retry_response.text
+                ai_data = validate_ai_response(ai_message)
+
+                if ai_data is None:
+                    print("Error: AI returned invalid JSON after retry.")
+                    conversation_history.pop()
+                    continue
+
+            conversation_history.append(
+                types.Content(
+                    role="model",
+                    parts=[types.Part.from_text(text=ai_message)]
+                )
+            )
+
+            print(ai_message)
+
+    elif choice == "2":
+        print("\nPast sessions are not available yet.")
+
+    elif choice == "3":
+        print("\nGoodbye!")
         break
 
-    conversation_history.append(
-        types.Content(
-            role="user",
-            parts=[types.Part.from_text(text=user_message)]
-        )
-    )
-
-    response = client.models.generate_content(
-        model="gemini-3.5-flash-lite",
-        contents=conversation_history,
-        config=types.GenerateContentConfig(
-            system_instruction=system_prompt
-        )
-    )
-
-    ai_message = response.text
-
-    ai_data = validate_ai_response(ai_message)
-
-    if ai_data is None:
-        print("Warning: AI returned invalid JSON. Retrying...")
-
-        retry_response = client.models.generate_content(
-            model="gemini-3.5-flash-lite",
-            contents=conversation_history,
-            config=types.GenerateContentConfig(
-                system_instruction=system_prompt
-            )
-        )
-
-        ai_message = retry_response.text
-        ai_data = validate_ai_response(ai_message)
-
-        if ai_data is None:
-            print("Error: AI returned invalid JSON after retry.")
-            conversation_history.pop()
-            continue
-
-    conversation_history.append(
-        types.Content(
-            role="model",
-            parts=[types.Part.from_text(text=ai_message)]
-        )
-    )
-
-    print(ai_message)
-
+    else:
+        print("\nInvalid option. Please choose 1, 2, or 3.")
