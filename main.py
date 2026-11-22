@@ -233,18 +233,21 @@ def open_past_session():
 
         print("\n--- SESSION SUMMARY ---")
 
-        summary = session_data["summary"]
+        if "summary" not in session_data:
+            print("\nNo summary available for this session.")
+        else:
+            summary = session_data["summary"]
 
-        print("\nSummary:")
-        print(summary["summary"])
+            print("\nSummary:")
+            print(summary["summary"])
 
-        print("\nKey Stock Issues:")
-        for issue in summary["key_stock_issues"]:
-            print(f"- {issue}")
+            print("\nKey Stock Issues:")
+            for issue in summary["key_stock_issues"]:
+                print(f"- {issue}")
 
-        print("\nRecommended Actions:")
-        for action in summary["recommended_actions"]:
-            print(f"- {action}")
+            print("\nRecommended Actions:")
+            for action in summary["recommended_actions"]:
+                print(f"- {action}")
 
     except (ValueError, FileNotFoundError, json.JSONDecodeError, KeyError):
         print("\nError: Could not open the selected session.")
