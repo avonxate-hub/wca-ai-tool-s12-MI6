@@ -286,13 +286,21 @@ while True:
                 )
             )
 
-            response = client.models.generate_content(
-                model="gemini-3.5-flash-lite",
-                contents=conversation_history,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_prompt
+            try:
+                response = client.models.generate_content(
+                    model="gemini-3.5-flash-lite",
+                    contents=conversation_history,
+                    config=types.GenerateContentConfig(
+                        system_instruction=system_prompt
+                    )
                 )
-            )
+
+            except Exception as e:
+                print("\nError: Unable to contact the AI service.")
+                print("Please check your internet connection or try again later.")
+
+                conversation_history.pop()
+                continue
 
             ai_message = response.text
             ai_data = validate_ai_response(ai_message)
@@ -300,13 +308,21 @@ while True:
             if ai_data is None:
                 print("Warning: AI returned invalid JSON. Retrying...")
 
-                retry_response = client.models.generate_content(
-                    model="gemini-3.5-flash-lite",
-                    contents=conversation_history,
-                    config=types.GenerateContentConfig(
-                        system_instruction=system_prompt
+                try:
+                    retry_response = client.models.generate_content(
+                        model="gemini-3.5-flash-lite",
+                        contents=conversation_history,
+                        config=types.GenerateContentConfig(
+                            system_instruction=system_prompt
+                        )
                     )
-                )
+
+                except Exception as e:
+                    print("\nError: Unable to contact the AI service.")
+                    print("Please check your internet connection or try again later.")
+
+                    conversation_history.pop()
+                    continue
 
                 ai_message = retry_response.text
                 ai_data = validate_ai_response(ai_message)
