@@ -154,6 +154,9 @@ def generate_session_summary(conversation_history):
 
     except (json.JSONDecodeError, TypeError):
         return None
+    except Exception:
+        print("\nError: Unable to generate the session summary.")
+        return None
 
 
 def save_session(conversation_history, summary_data):
@@ -269,7 +272,14 @@ while True:
                 continue
 
             if user_message.lower() == "exit":
-                summary_data = generate_session_summary(conversation_history)
+                if not conversation_history:
+                    summary_data = {
+                        "summary": "No conversation took place during this session.",
+                        "key_stock_issues": [],
+                        "recommended_actions": []
+                    }
+                else:
+                    summary_data = generate_session_summary(conversation_history)
 
                 print("\nSESSION SUMMARY:")
                 print(summary_data)
