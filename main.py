@@ -101,6 +101,45 @@ def validate_ai_response(ai_message):
         return None
 
 
+def wants_raw_json(user_message):
+    return "json" in user_message.lower()
+
+
+def print_ai_response(ai_data):
+    print("\nMESSAGE:")
+    print(ai_data["message"])
+
+    print("\nPRIORITY:")
+    print(ai_data["priority"].upper())
+
+    print("\nRECOMMENDATIONS:")
+    for recommendation in ai_data["recommendations"]:
+        print(f"• {recommendation}")
+
+
+def print_session_summary(summary_data):
+    if summary_data is None:
+        print("Summary unavailable.")
+        return
+
+    print(f"\nSummary:")
+    print(summary_data["summary"])
+
+    print("\nKey Stock Issues:")
+    if summary_data["key_stock_issues"]:
+        for issue in summary_data["key_stock_issues"]:
+            print(f"• {issue}")
+    else:
+        print("• None")
+
+    print("\nRecommended Actions:")
+    if summary_data["recommended_actions"]:
+        for action in summary_data["recommended_actions"]:
+            print(f"• {action}")
+    else:
+        print("• None")
+
+
 def generate_session_summary(conversation_history):
     try:
         summary_history = conversation_history.copy()
@@ -229,25 +268,19 @@ def open_past_session():
             if message["role"] == "user":
                 print(f"\nYou: {message['content']}")
             else:
-                print(f"\nAI: {message['content']}")
+                ai_data = validate_ai_response(message["content"])
+                print("\nAI:")
+                if ai_data is None:
+                    print(message["content"])
+                else:
+                    print_ai_response(ai_data)
 
         print("\n--- SESSION SUMMARY ---")
 
         if "summary" not in session_data:
             print("\nNo summary available for this session.")
         else:
-            summary = session_data["summary"]
-
-            print("\nSummary:")
-            print(summary["summary"])
-
-            print("\nKey Stock Issues:")
-            for issue in summary["key_stock_issues"]:
-                print(f"- {issue}")
-
-            print("\nRecommended Actions:")
-            for action in summary["recommended_actions"]:
-                print(f"- {action}")
+            print_session_summary(session_data["summary"])
 
     except (ValueError, FileNotFoundError, json.JSONDecodeError, KeyError):
         print("\nError: Could not open the selected session.")
@@ -285,7 +318,7 @@ while True:
                     summary_data = generate_session_summary(conversation_history)
 
                 print("\nSESSION SUMMARY:")
-                print(summary_data)
+                print_session_summary(summary_data)
 
                 save_session(conversation_history, summary_data)
 
@@ -352,7 +385,10 @@ while True:
                 )
             )
 
-            print(ai_message)
+            if wants_raw_json(user_message):
+                print(ai_message)
+            else:
+                print_ai_response(ai_data)
 
     elif choice == "2":
         open_past_session()
