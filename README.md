@@ -178,6 +178,35 @@ Start the application with:
 ```bash
 python main.py
 ```
+## Quick User Guide
+
+### 1. Start a Session
+
+From the main menu, select:
+
+1. Start New Session
+
+The application will then allow the shop owner to enter information about stock, sales, and other inventory-related questions.
+
+### 2. Continue the Conversation
+
+The shop owner can provide information across multiple messages.
+
+For example:
+
+- Report the current stock.
+- Report a sale.
+- Ask how much stock remains.
+- Ask whether restocking is necessary.
+
+The application keeps the conversation history so that later questions can use information from earlier messages.
+
+### 3. End the Session
+
+Enter:
+
+```text
+exit
 
 The main menu provides three options:
 
