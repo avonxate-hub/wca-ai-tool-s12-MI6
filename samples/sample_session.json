@@ -1,43 +1,43 @@
 {
-    "date": "2026-11-22",
-    "time": "14:00:00",
+    "date": "2026-11-26",
+    "time": "10:00:00",
     "conversation": [
         {
             "role": "user",
-            "content": "I have 10 bags of unga in stock."
+            "content": "I have 10 bags of unga and 8 bottles of cooking oil."
         },
         {
             "role": "model",
-            "content": "{\"message\":\"You currently have 10 bags of unga in stock. This is a reasonable starting level, but your sales rate should be monitored.\",\"priority\":\"medium\",\"recommendations\":[\"Monitor daily unga sales.\",\"Keep track of your supplier's delivery time.\",\"Set a minimum stock level for unga.\"]}"
+            "content": "{\"message\":\"You currently have 10 bags of unga and 8 bottles of cooking oil. It is useful to monitor the sales rate of both products before deciding when to restock.\",\"priority\":\"medium\",\"recommendations\":[\"Monitor daily sales of unga and cooking oil.\",\"Set minimum stock levels for both products.\",\"Keep track of supplier delivery times.\"]}"
         },
         {
             "role": "user",
-            "content": "I sold 4 bags today. How many do I have left?"
+            "content": "I sold 4 bags of unga and 3 bottles of cooking oil today."
         },
         {
             "role": "model",
-            "content": "{\"message\":\"You have 6 bags of unga remaining after selling 4 bags from your original stock of 10 bags.\",\"priority\":\"medium\",\"recommendations\":[\"Monitor your daily sales rate.\",\"Consider restocking before reaching your minimum stock level.\"]}"
+            "content": "{\"message\":\"After today's sales, you have 6 bags of unga and 5 bottles of cooking oil remaining.\",\"priority\":\"medium\",\"recommendations\":[\"Continue monitoring the daily sales rate.\",\"Compare the remaining stock with your minimum stock levels.\"]}"
         },
         {
             "role": "user",
-            "content": "Should I restock soon?"
+            "content": "Should I start preparing to restock?"
         },
         {
             "role": "model",
-            "content": "{\"message\":\"Yes. If you continue selling at a similar rate, you should begin planning your next unga order soon to avoid running out of stock.\",\"priority\":\"high\",\"recommendations\":[\"Contact your supplier and confirm delivery time.\",\"Set aside enough stock to cover expected demand.\",\"Monitor sales closely over the next few days.\"]}"
+            "content": "{\"message\":\"Yes. Since both products have already experienced significant sales, you should begin planning the next order while monitoring demand over the next few days.\",\"priority\":\"high\",\"recommendations\":[\"Contact your suppliers and confirm delivery times.\",\"Plan a new order before stock reaches the minimum level.\",\"Continue monitoring sales closely.\"]}"
         }
     ],
     "summary": {
-        "summary": "The shop owner discussed unga stock levels after starting with 10 bags and selling 4 bags. The conversation focused on remaining stock and whether to prepare for another order.",
+        "summary": "The shop owner discussed stock levels for unga and cooking oil, then reported sales for both products. The conversation ended with a decision to begin planning for restocking.",
         "key_stock_issues": [
-            "Unga stock decreased from 10 bags to 6 bags.",
-            "Continued sales could lead to low stock.",
-            "The supplier delivery time should be considered when planning the next order."
+            "Unga decreased from 10 bags to 6 bags.",
+            "Cooking oil decreased from 8 bottles to 5 bottles.",
+            "Continued sales may require both products to be restocked."
         ],
         "recommended_actions": [
-            "Monitor daily unga sales.",
-            "Contact the supplier and confirm delivery time.",
-            "Set a minimum stock level for unga.",
+            "Monitor daily sales.",
+            "Set minimum stock levels.",
+            "Confirm supplier delivery times.",
             "Plan the next restocking order before stock becomes critically low."
         ]
     }
